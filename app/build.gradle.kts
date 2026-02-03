@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android") // Hilt kullanacaksan bu şart
     id("com.google.devtools.ksp")
-    id("com.google.gms.google-services")
+    //id("com.google.gms.google-services")
 }
 
 android {
@@ -95,8 +95,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    //implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    //implementation("com.google.firebase:firebase-messaging-ktx")
 
     // Testing
     testImplementation(libs.junit)
