@@ -24,13 +24,13 @@ class NewsCheckWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         try {
             val selectedCategory = preferencesManager.categoryFlow.first()
-            val lastDateInDb = newsDao.getLatestPublishDate(selectedCategory)
+            val lastDateInDb = newsDao.getLatestPublishDate(selectedCategory) ?: "1970-01-01T00:00:00Z"
             val response = apiService.getNewsApiService("tr",selectedCategory,"62a0b36c61884473973acd7d1cf95fc2")
-            val latestNewsFromApi = response.articles.firstOrNull()
+            val newsArticlesFromApi = response.articles.filter { it.publishedAt > lastDateInDb}
 
-            if (latestNewsFromApi != null && latestNewsFromApi.publishedAt > (lastDateInDb ?:"")){
+            if (newsArticlesFromApi.isNotEmpty()){
 
-                val newsToInsert = response.articles.map { article ->
+                val newsToInsert = newsArticlesFromApi.map { article ->
 
                     NewsArticleEntity(
                         title = article.title,
@@ -43,7 +43,7 @@ class NewsCheckWorker @AssistedInject constructor(
                     )
                 }
                 newsDao.insertArticles(newsToInsert)
-                println("Yeni haberler veritabanına başarıyla kaydedildi.")
+                println("${newsToInsert.size} adet yeni haber veritabanına başarıyla kaydedildi.")
                 //TODO: FIREBASE BİLDİRİMİ BURAYA GLECEK
 
             }
