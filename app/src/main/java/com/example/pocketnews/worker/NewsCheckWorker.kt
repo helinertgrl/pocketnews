@@ -1,6 +1,7 @@
 package com.example.pocketnews.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -50,7 +51,7 @@ class NewsCheckWorker @AssistedInject constructor(
             return Result.success()
 
         }catch (e: Exception){
-            println("Hata oluştu: ${e.localizedMessage}")
+            Log.e("NewsCheckWorker", "Haber kontrolü sırasında hata oluştu: ${e.message}", e)
             return Result.retry()
         }
     }
