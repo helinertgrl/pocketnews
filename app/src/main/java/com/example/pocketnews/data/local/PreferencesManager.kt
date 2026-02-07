@@ -17,8 +17,14 @@ class PreferencesManager(private val context: Context) {
         private val CATEGORY_KEY = stringPreferencesKey("selected_category")
         private val UPDATE_INTERVAL_HOURS = intPreferencesKey("update_interval")
         private val IS_FIRST_LAUNCH = booleanPreferencesKey("is_first_launch")
+        private val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
     }
 
+    suspend fun saveNotificationsToDataStore(enabled: Boolean){
+        context.dataStore.edit { settings ->
+            settings[NOTIFICATIONS_ENABLED] = enabled
+        }
+    }
 
     suspend fun saveCategoryToDataStore(categoryName: String){
         context.dataStore.edit { settings ->
@@ -36,6 +42,10 @@ class PreferencesManager(private val context: Context) {
         context.dataStore.edit { settings ->
             settings[IS_FIRST_LAUNCH] = launch
         }
+    }
+
+    val notificationsFlow: Flow<Boolean> = context.dataStore.data.map { settings ->
+        settings[NOTIFICATIONS_ENABLED] ?: false
     }
 
     val categoryFlow: Flow<String> = context.dataStore.data.map { settings ->
