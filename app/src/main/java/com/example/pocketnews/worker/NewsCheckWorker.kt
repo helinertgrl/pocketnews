@@ -1,6 +1,7 @@
 package com.example.pocketnews.worker
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -24,6 +25,16 @@ class NewsCheckWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (androidx.core.content.ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+                    ) {
+                    return Result.failure() //izin yoksa failure
+                }
+            }
+
             val selectedCategory = preferencesManager.categoryFlow.first()
             val lastDateInDb = newsDao.getLatestPublishDate(selectedCategory) ?: "1970-01-01T00:00:00Z"
             val response = apiService.getNewsApiService("tr",selectedCategory,"62a0b36c61884473973acd7d1cf95fc2")
@@ -45,7 +56,15 @@ class NewsCheckWorker @AssistedInject constructor(
                 }
                 newsDao.insertArticles(newsToInsert)
                 println("${newsToInsert.size} adet yeni haber veritabanına başarıyla kaydedildi.")
-                //TODO: FIREBASE BİLDİRİMİ BURAYA GLECEK
+
+                val firstArticle = newsArticlesFromApi.first()
+                val notificationHelper = com.example.pocketnews.utils.NotificationHelper(applicationContext)
+
+                notificationHelper.sendNewsNotification(
+                    context = applicationContext,
+                    title = firstArticle.title,
+                    url = firstArticle.url
+                )
 
             }
             return Result.success()
