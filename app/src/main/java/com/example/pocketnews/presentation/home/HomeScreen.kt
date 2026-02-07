@@ -31,7 +31,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navController: NavController
 ){
-   val state = viewModel.uiState
+    val state = viewModel.uiState
     val context = LocalContext.current
 
     when(state){

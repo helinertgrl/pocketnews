@@ -1,6 +1,9 @@
 package com.example.pocketnews.di
 
 import android.content.Context
+import androidx.room.Room
+import com.example.pocketnews.data.local.NewsDao
+import com.example.pocketnews.data.local.NewsDatabase
 import com.example.pocketnews.data.local.PreferencesManager
 import com.example.pocketnews.data.remote.NewsApiService
 import com.example.pocketnews.data.remote.RetrofitInstance
@@ -32,5 +35,21 @@ object AppModule {
     @Singleton
     fun provideNewsRepository(api: NewsApiService): NewsRepository{
         return NewsRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNewsDatabase(@ApplicationContext context: Context): NewsDatabase{
+        return Room.databaseBuilder(
+            context,
+            NewsDatabase::class.java,
+            "news_database"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNewsDao(database: NewsDatabase): NewsDao {
+        return database.newsDao()
     }
 }
