@@ -18,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +25,23 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.pocketnews.presentation.Screen
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Switch
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.google.firebase.logger.Logger
+import kotlin.contracts.contract
 
 @Composable
 fun OnboardingScreen(
@@ -34,29 +50,65 @@ fun OnboardingScreen(
     navController: NavController
 ) {
     val state = viewModel.uiState
+    val context = LocalContext.current
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        viewModel.onNotificationPermissionResult(isGranted)
+        if (isGranted){
+            Log.d("OnboardScreen", "Bildirim izni verildi")
+        }else{
+            Log.d("OnboardingScreen","Bildirim izni reddedildi")
+        }
+    }
+
+    //İlk açılışta izin (android 13+)
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            val hasPermission = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (!hasPermission){
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else{
+                viewModel.onNotificationPermissionResult(true)
+            }
+        }else{
+            //Android 12- izin oto var ama kullanıcı karar verecek.
+            viewModel.onNotificationPermissionResult(true)
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("POCKET NEWS",
+        Text(
+            "POCKET NEWS",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp))
-        Text("Pocket News, seçtiğiniz kategorileri sizin yerinize takip eder ve yeni bir gelişme olduğunda sizi anında bilgilendirir." ,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Text(
+            "Pocket News, seçtiğiniz kategorileri sizin yerinize takip eder ve yeni bir gelişme olduğunda sizi anında bilgilendirir." ,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(
                 start = 8.dp,
                 end = 8.dp,
                 bottom = 24.dp
-            ))
+            )
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Hangi kategorideki haberleri takip etmek istersiniz?")
 
+        Text("Hangi kategorideki haberleri takip etmek istersiniz?")
 
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -77,9 +129,9 @@ fun OnboardingScreen(
                 }
             }
 
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text("Ne sıklıkla kontrol edilsin?")
-
 
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -100,6 +152,41 @@ fun OnboardingScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(24.dp))
+
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 16.dp),
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "Bildirimler",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "Yeni haberlerden haberdar ol",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Switch(
+                checked = state.notificationsEnabled,
+                onCheckedChange = {viewModel.onNotificationToggled(it)}
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         Button(
             onClick = {
                 viewModel.saveSelection()
@@ -107,11 +194,11 @@ fun OnboardingScreen(
                 navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Onboarding.route) {inclusive = true}
                 }
-        },
-            enabled = state.selectedCategory != null && state.selectedInterval !=null
+            },
+            enabled = state.selectedCategory.isNotEmpty() && state.selectedInterval != null,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("BAŞLAYALIM")
         }
-
     }
 }

@@ -165,7 +165,6 @@ fun SettingsScreen(
             ) {
                 Text("Kaydet")
             }
-
         }
     }
 }

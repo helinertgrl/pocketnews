@@ -1,6 +1,7 @@
 package com.example.pocketnews.presentation.home
 
 import android.os.Message
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +11,7 @@ import com.example.pocketnews.data.local.PreferencesManager
 import com.example.pocketnews.domain.model.NewsArticle
 import com.example.pocketnews.domain.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.compose
 import kotlinx.coroutines.launch
@@ -49,18 +51,23 @@ class HomeViewModel @Inject constructor(
             if (!isRefreshing){
                 uiState = HomeUiState.Loading
             }
+
+            Log.d("HomeViewModel", "Loading news for category: $category")
             try {
                 var result = newsRepository.getTopHeadlines(category,"tr")
                 if (result.isSuccess){
-                    result.getOrNull()
-                    uiState = HomeUiState.Success(articles = result.getOrNull() ?: emptyList())
+                    val articles = result.getOrNull() ?: emptyList()
+                    Log.d("HomeViewModel", "✅ Successfully loaded ${articles.size} articles")
+                    uiState = HomeUiState.Success(articles = articles)
                 }
                 else{
-                    result.exceptionOrNull()
-                    uiState = HomeUiState.Error(message = result.exceptionOrNull()?.message ?: "Hata oluştu" )
+                    val error = result.exceptionOrNull()?.message ?: "Hata oluştu"
+                    Log.e("HomeViewModel", "❌ Error loading news: $error")
+                    uiState = HomeUiState.Error(message = error)
                 }
             }
             catch (e: Exception){
+                Log.e("HomeViewModel", "❌ Exception: ${e.message}", e)
                 uiState = HomeUiState.Error(message = e.message ?: "Bilinmeyen hata")
             }
         }
@@ -69,8 +76,14 @@ class HomeViewModel @Inject constructor(
     fun refreshNews(){
         viewModelScope.launch {
             isRefreshing = true
-            loadNews(selectedCategory)
-            isRefreshing = false
+            Log.d("HomeViewModel", "🔄 Refreshing news for category: $selectedCategory")
+            try {
+                loadNews(selectedCategory)
+            } finally {
+                delay(500)
+                isRefreshing = false
+                Log.d("HomeViewModel", "✅ Refresh completed")
+            }
         }
     }
 }

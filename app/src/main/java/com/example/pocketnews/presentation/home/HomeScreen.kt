@@ -44,12 +44,12 @@ import com.example.pocketnews.presentation.home.components.NewsCard
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navController: NavController
-){
+) {
     val isRefreshing = viewModel.isRefreshing
     val activity = (LocalActivity.current as? android.app.Activity)
     val category = viewModel.selectedCategory
 
-    val titleText = if (category == "general" || category.isEmpty()){
+    val titleText = if (category == "general" || category.isEmpty()) {
         "Haberler"
     } else {
         category.replaceFirstChar { it.uppercase() }
@@ -60,21 +60,25 @@ fun HomeScreen(
         activity?.finish()
     }
 
-    Scaffold (
-        topBar = { TopAppBar(
-            title = {Text(titleText)},
-            actions = {
-                IconButton(
-                    onClick = {navController.navigate(Screen.Settings.route)})
-                {
-                    Icon(Icons.Default.Settings,
-                        contentDescription = "ayarlar")
-                }}
-        ) }
-    ){
-        innerPadding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(titleText) },
+                actions = {
+                    IconButton(
+                        onClick = { navController.navigate(Screen.Settings.route) })
+                    {
+                        Icon(
+                            Icons.Default.Settings,
+                            contentDescription = "ayarlar"
+                        )
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
 
-        Box (
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
@@ -82,55 +86,59 @@ fun HomeScreen(
             val state = viewModel.uiState
             val context = LocalContext.current
 
-            when(state){
+            when (state) {
                 is HomeUiState.Loading -> Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
-                ){
+                ) {
                     CircularProgressIndicator()
                 }
 
-                is HomeUiState.Success ->{
-                    if (state.articles.isEmpty())
-                    {
-                        Box (
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ){
-                            Text("Henüz haber yok, ilk kontrol bekleniyor...")
-                        }
-                    }else {
-                        PullToRefreshBox(
-                            isRefreshing = isRefreshing,
-                            onRefresh = {viewModel.refreshNews()}
-                        ) {
-                            LazyColumn(
+                is HomeUiState.Success -> {
+                    PullToRefreshBox(
+                        isRefreshing = isRefreshing,
+                        onRefresh = { viewModel.refreshNews() }
+                    ) {
+                        if (state.articles.isEmpty()) {
+                            Box(
                                 modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ){
-                                items(state.articles) { article ->
-                                    NewsCard(
-                                        article = article,
-                                        onClick = {
-                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url))
-                                            context.startActivity(intent)
-                                        }
-                                    )
-                                }
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Henüz haber yok, ilk kontrol bekleniyor...")
                             }
+                        } else {
+
+                                LazyColumn(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentPadding = PaddingValues(16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    items(state.articles) { article ->
+                                        NewsCard(
+                                            article = article,
+                                            onClick = {
+                                                val intent = Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    Uri.parse(article.url)
+                                                )
+                                                context.startActivity(intent)
+                                            }
+                                        )
+                                    }
+                                }
                         }
                     }
                 }
-
-                is HomeUiState.Error -> Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text(state.message)
-                    Button(onClick = {
-                        viewModel.refreshNews()
-                    }) {
-                        Text("Yenile")
+                is HomeUiState.Error -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(state.message)
+                        Button(onClick = {
+                            viewModel.refreshNews()
+                        }) {
+                            Text("Yenile")
+                        }
                     }
                 }
             }

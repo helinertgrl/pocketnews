@@ -1,18 +1,17 @@
 package com.example.pocketnews.presentation.settings
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Interval
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.pocketnews.data.local.PreferencesManager
+import com.example.pocketnews.utils.NotificationHelper
+import com.example.pocketnews.worker.NewsWorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +26,9 @@ data class SettingsState(
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val preferencesManager: PreferencesManager): ViewModel() {
+    private val preferencesManager: PreferencesManager,
+    @ApplicationContext private val context: Context
+): ViewModel() {
         var uiState by mutableStateOf(SettingsState())
             private set
 
@@ -83,16 +84,23 @@ class SettingsViewModel @Inject constructor(
             preferencesManager.saveHoursToDataStore(uiState.selectedInterval)
             preferencesManager.saveNotificationsToDataStore(uiState.isNotificationsEnabled)
 
-            Log.d("Settings", "WorkManager re-scheduled with ${uiState.selectedInterval} hours")
+            NewsWorkManager.scheduleNewsCheck(context,uiState.selectedInterval)
+            Log.d("SettingsViewModel", "WorkManager re-scheduled with ${uiState.selectedInterval} hours")
 
             originalState = uiState
-
             onComplete()
         }
     }
 
     fun testNotification(){
-        //TODO: Workmanager eklendiğinde implement edilecek
-        Log.d("SettingsViewModel", "Test notification triggered")
+       viewModelScope.launch {
+           val notificationHelper = NotificationHelper(context)
+           notificationHelper.sendNewsNotification(
+               context = context,
+               title = "Test Bildirimi",
+               url = "https://www.google.com"
+           )
+           Log.d("SettingsViewModel", "Test notification sent")
+       }
     }
 }
