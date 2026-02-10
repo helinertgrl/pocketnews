@@ -1,6 +1,5 @@
 package com.example.pocketnews.data.local
 
-import android.accessibilityservice.GestureDescription
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

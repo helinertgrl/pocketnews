@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(
 
             Log.d("HomeViewModel", "Loading news for category: $category")
             try {
-                var result = newsRepository.getTopHeadlines(category,"tr")
+                var result = newsRepository.getTopHeadlines(category,"us")
                 if (result.isSuccess){
                     val articles = result.getOrNull() ?: emptyList()
                     Log.d("HomeViewModel", "✅ Successfully loaded ${articles.size} articles")
