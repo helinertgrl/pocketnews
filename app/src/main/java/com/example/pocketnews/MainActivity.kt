@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
@@ -28,14 +30,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            delay(10000)
-            testWorkManager()
-        }
-
         enableEdgeToEdge()
         setContent {
-            PocketNewsTheme {
+
+            val isDarkMode by preferencesManager.darkModeFlow.collectAsState(initial = false)
+
+            PocketNewsTheme(
+                darkTheme = isDarkMode,
+                dynamicColor = false
+            ) {
                 Navigation(preferencesManager = preferencesManager)
             }
         }

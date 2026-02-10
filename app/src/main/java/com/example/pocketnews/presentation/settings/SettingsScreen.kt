@@ -1,17 +1,24 @@
 package com.example.pocketnews.presentation.settings
 
+import android.R
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -25,6 +32,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -41,7 +49,8 @@ fun SettingsScreen(
     Scaffold (
         topBar = {
             TopAppBar(
-                title = {Text("Ayarlar")},
+                title = {Text("Ayarlar",
+                    fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = {navController.popBackStack() }) {
                         Icon(
@@ -66,93 +75,76 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            Text(
-                text = "Mevcut kategori: ${state.selectedCategory}",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = "Kategori Seçin:"
-            )
+            SettingsCard(title = "Görünüm") {
+                Row (
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text("Koyu Tema")
+                    Switch(
+                        checked = state.isDarkMode,
+                        onCheckedChange = {viewModel.onDarkModeToggled(it)}
+                    )
+                }
+            }
 
-            Column {
+            SettingsCard(title = "Haber Kategorisi"){
                 state.categories.forEach { option ->
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 4.dp)
+                        modifier = Modifier.fillMaxWidth()
+                            .clickable{viewModel.onCategorySelected(option)}
                     ){
                         RadioButton(
                             selected = (state.selectedCategory == option),
                             onClick = {viewModel.onCategorySelected(option)}
                         )
-                        Text(text = option,
-                            modifier = Modifier.padding(8.dp))
+                        Text(text = option.replaceFirstChar { it.uppercase() })
                     }
                 }
             }
 
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = 16.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant
-            )
-
-            Text(
-                text = "Mevcut Güncelleme Sıklığı: ${state.selectedInterval} saat",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = "Güncelleme Sıklığı Seçin:"
-            )
-
-            Column {
+            SettingsCard(title = "Kontrol Sıklığı"){
                 state.intervals.forEach { option ->
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 4.dp)
+                        modifier = Modifier.fillMaxWidth()
+                            .clickable{viewModel.onIntervalSelected(option)}
                     ){
                         RadioButton(
                             selected = (state.selectedInterval == option),
                             onClick = {viewModel.onIntervalSelected(option)}
                         )
-                        Text("${option} saat",
-                            modifier = Modifier.padding(8.dp))
+                        Text("${option} saat")
                     }
                 }
             }
 
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = 16.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant
-            )
-
-            Text(
-                text = "Bildirimler",
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Haber bildirimlerini al")
-
-                Switch(
-                    checked = state.isNotificationsEnabled,
-                    onCheckedChange = { isChecked ->
-                        viewModel.onNotificationToggled(isChecked)
-                    }
-                )
+            SettingsCard(title = "Bildirimler"){
+                Row (
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text("Yeni haber bildirimleri")
+                    Switch(
+                        checked = state.isNotificationsEnabled,
+                        onCheckedChange = { isChecked ->
+                            viewModel.onNotificationToggled(isChecked)
+                        }
+                    )
+                }
+                Button(
+                    onClick = {viewModel.testNotification()},
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("Bildirimleri Test Et")
+                }
             }
-
-            Button(
-                onClick = {viewModel.testNotification()}
-            ) {
-                Text("Bildirimleri Test Et")
-            }
-
-            Spacer(modifier = Modifier.padding(16.dp))
 
             Button(
                 onClick = {
@@ -160,12 +152,42 @@ fun SettingsScreen(
                         navController.popBackStack()
                     }
                 },
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-                enabled = viewModel.hasChanges
+                modifier = Modifier.fillMaxWidth()
+                    .height(56.dp)
+                    .padding(top = 16.dp),
+                enabled = viewModel.hasChanges,
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Kaydet")
+                Text("Değişiklikleri Kaydet")
             }
         }
+    }
+}
+
+@Composable
+fun SettingsCard(title: String, content: @Composable ColumnScope.() -> Unit){
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp) // EKLE
+
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            content()
+        }
+
     }
 }
 

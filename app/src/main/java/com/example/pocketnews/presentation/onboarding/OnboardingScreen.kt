@@ -31,9 +31,16 @@ import android.os.Build
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -89,6 +96,16 @@ fun OnboardingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Icon(
+            imageVector = Icons.Default.Notifications,
+            contentDescription = "notification",
+            modifier = Modifier
+                .size(64.dp)
+                .padding(bottom = 16.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+
         Text(
             "POCKET NEWS",
             style = MaterialTheme.typography.headlineMedium,
@@ -106,86 +123,129 @@ fun OnboardingScreen(
             )
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        Text("Hangi kategorideki haberleri takip etmek istersiniz?")
-
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp)
             ){
+                Text("Hangi kategorideki haberleri takip etmek istersiniz?",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
                 state.categories.forEach { option ->
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {viewModel.onCategorySelected(option)}
+                            .padding(vertical = 4.dp)
                     ) {
                         RadioButton(
                             selected = (state.selectedCategory == option),
                             onClick = {viewModel.onCategorySelected(option)}
                         )
-                        Text(option)
+                        Text(option.replaceFirstChar { it.uppercase() },
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
                     }
                 }
             }
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        Text("Ne sıklıkla kontrol edilsin?")
-
+        Card(
+            modifier = Modifier.fillMaxWidth()
+                .padding(vertical = 8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp)
             ) {
+                Text(
+                    "Ne sıklıkla kontrol edilsin?",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
                 state.intervals.forEach { option ->
-                    Row (
+                    Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable{viewModel.onIntervalSelected(option)}
-                    ){
+                            .clickable { viewModel.onIntervalSelected(option) }
+                            .padding(vertical = 4.dp)
+                    ) {
                         RadioButton(
                             selected = (state.selectedInterval == option),
-                            onClick = {viewModel.onIntervalSelected(option)}
+                            onClick = { viewModel.onIntervalSelected(option) }
                         )
-                        Text("$option saat")
+                        Text(
+                            "$option saat",
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
                     }
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        HorizontalDivider(
-            modifier = Modifier.padding(vertical = 16.dp),
-            thickness = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant
-        )
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
-            Column(
-                modifier = Modifier.weight(1f)
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "Bildirimler",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = "Yeni haberlerden haberdar ol",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = "Bildirimler",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = "Yeni haberlerden haberdar ol",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Switch(
+                    checked = state.notificationsEnabled,
+                    onCheckedChange = {viewModel.onNotificationToggled(it)}
                 )
             }
-
-            Switch(
-                checked = state.notificationsEnabled,
-                onCheckedChange = {viewModel.onNotificationToggled(it)}
-            )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
@@ -197,8 +257,12 @@ fun OnboardingScreen(
             },
             enabled = state.selectedCategory.isNotEmpty() && state.selectedInterval != null,
             modifier = Modifier.fillMaxWidth()
+                .padding(top = 24.dp)
+                .height(56.dp),
+            shape = RoundedCornerShape(12.dp)
         ) {
-            Text("BAŞLAYALIM")
+            Text("BAŞLAYALIM",
+                style = MaterialTheme.typography.titleMedium)
         }
     }
 }

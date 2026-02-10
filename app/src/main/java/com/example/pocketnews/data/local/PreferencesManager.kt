@@ -18,6 +18,7 @@ class PreferencesManager(private val context: Context) {
         private val UPDATE_INTERVAL_HOURS = intPreferencesKey("update_interval")
         private val IS_FIRST_LAUNCH = booleanPreferencesKey("is_first_launch")
         private val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
+        private val DARK_MODE_ENABLED = booleanPreferencesKey("dark_mode_enabled")
     }
 
     suspend fun saveNotificationsToDataStore(enabled: Boolean){
@@ -44,6 +45,12 @@ class PreferencesManager(private val context: Context) {
         }
     }
 
+    suspend fun saveDarkModeToDataStore(enabled: Boolean){
+        context.dataStore.edit { settings ->
+            settings[DARK_MODE_ENABLED] = enabled
+        }
+    }
+
     val notificationsFlow: Flow<Boolean> = context.dataStore.data.map { settings ->
         settings[NOTIFICATIONS_ENABLED] ?: false
     }
@@ -58,5 +65,9 @@ class PreferencesManager(private val context: Context) {
 
     val isfirstlaunchflow: Flow<Boolean> = context.dataStore.data.map { settings ->
         settings[IS_FIRST_LAUNCH] ?: true
+    }
+
+    val darkModeFlow: Flow<Boolean> = context.dataStore.data.map { settings ->
+        settings[DARK_MODE_ENABLED] ?: false
     }
 }

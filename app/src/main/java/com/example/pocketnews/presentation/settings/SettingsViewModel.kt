@@ -21,7 +21,8 @@ data class SettingsState(
     val selectedInterval: Int = 4,
     val isNotificationsEnabled: Boolean = false,
     val categories: List<String> = listOf("sports", "technology"),
-    val intervals: List<Int> = listOf(2,4,6,12,24)
+    val intervals: List<Int> = listOf(2,4,6,12,24),
+    val isDarkMode: Boolean = false,
 )
 
 @HiltViewModel
@@ -40,14 +41,16 @@ class SettingsViewModel @Inject constructor(
             combine(
                 preferencesManager.categoryFlow,
                 preferencesManager.updatehoursflow,
-                preferencesManager.notificationsFlow
+                preferencesManager.notificationsFlow,
+                preferencesManager.darkModeFlow
             ) {
-                category, hours, notifications ->
+                category, hours, notifications, darkMode  ->
 
                 val fetchedState = SettingsState(
                     selectedCategory = category,
                     selectedInterval = hours,
-                    isNotificationsEnabled = notifications
+                    isNotificationsEnabled = notifications,
+                    isDarkMode = darkMode
                 )
 
                 if (originalState.selectedCategory ==""){
@@ -83,6 +86,7 @@ class SettingsViewModel @Inject constructor(
             preferencesManager.saveCategoryToDataStore(uiState.selectedCategory)
             preferencesManager.saveHoursToDataStore(uiState.selectedInterval)
             preferencesManager.saveNotificationsToDataStore(uiState.isNotificationsEnabled)
+            preferencesManager.saveDarkModeToDataStore(uiState.isDarkMode)
 
             NewsWorkManager.scheduleNewsCheck(context,uiState.selectedInterval)
             Log.d("SettingsViewModel", "WorkManager re-scheduled with ${uiState.selectedInterval} hours")
@@ -102,5 +106,13 @@ class SettingsViewModel @Inject constructor(
            )
            Log.d("SettingsViewModel", "Test notification sent")
        }
+    }
+
+    fun onDarkModeToggled(enabled: Boolean){
+        uiState = uiState.copy(isDarkMode = enabled)
+
+        viewModelScope.launch {
+            preferencesManager.saveDarkModeToDataStore(enabled)
+        }
     }
 }

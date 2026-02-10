@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -33,6 +37,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -63,7 +69,11 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(titleText) },
+                title = { Text(
+                    titleText,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall
+                ) },
                 actions = {
                     IconButton(
                         onClick = { navController.navigate(Screen.Settings.route) })
@@ -91,7 +101,7 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(strokeWidth = 3.dp)
                 }
 
                 is HomeUiState.Success -> {
@@ -100,18 +110,30 @@ fun HomeScreen(
                         onRefresh = { viewModel.refreshNews() }
                     ) {
                         if (state.articles.isEmpty()) {
-                            Box(
+                            Column(
                                 modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                Text("Henüz haber yok, ilk kontrol bekleniyor...")
+                                Icon(
+                                    imageVector = Icons.Default.Info,
+                                    contentDescription = "info",
+                                    modifier = Modifier.size(64.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text("Henüz haber yok, ilk kontrol bekleniyor...",
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             }
                         } else {
-
                                 LazyColumn(
                                     modifier = Modifier.fillMaxSize(),
                                     contentPadding = PaddingValues(16.dp),
-                                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     items(state.articles) { article ->
                                         NewsCard(
@@ -132,11 +154,19 @@ fun HomeScreen(
                 is HomeUiState.Error -> {
                     Column(
                         modifier = Modifier.fillMaxSize()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Text(state.message)
+                        Text(state.message,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+
                         Button(onClick = {
-                            viewModel.refreshNews()
-                        }) {
+                            viewModel.refreshNews()},
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
                             Text("Yenile")
                         }
                     }

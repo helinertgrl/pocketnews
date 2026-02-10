@@ -12,15 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    onSurface = md_theme_dark_onSurface,
+    surface = md_theme_dark_surface,
+    background = md_theme_dark_background,
+    surfaceVariant = md_theme_dark_surfaceVariant
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    onSurface = md_theme_light_onSurface,
+    surface = md_theme_light_surface,
+    background = md_theme_light_background,
+    surfaceVariant = md_theme_light_surfaceVariant
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -46,8 +52,22 @@ fun PocketNewsTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> darkColorScheme(
+            primary = md_theme_dark_primary,
+            onPrimary = md_theme_dark_onPrimary,
+            onSurface = md_theme_dark_onSurface,
+            surface = md_theme_dark_surface,
+            background = md_theme_dark_background,
+            surfaceVariant = md_theme_dark_surfaceVariant
+        )
+        else -> lightColorScheme(
+            primary = md_theme_light_primary,
+            onPrimary = md_theme_light_onPrimary,
+            onSurface = md_theme_light_onSurface,
+            surface = md_theme_light_surface,
+            background = md_theme_light_background,
+            surfaceVariant = md_theme_light_surfaceVariant
+        )
     }
 
     MaterialTheme(
