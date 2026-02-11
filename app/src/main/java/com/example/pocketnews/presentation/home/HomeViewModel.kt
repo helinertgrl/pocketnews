@@ -1,6 +1,5 @@
 package com.example.pocketnews.presentation.home
 
-import android.os.Message
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,8 +11,6 @@ import com.example.pocketnews.domain.model.NewsArticle
 import com.example.pocketnews.domain.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.compose
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

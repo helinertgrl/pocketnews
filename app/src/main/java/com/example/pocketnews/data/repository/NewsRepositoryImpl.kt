@@ -3,7 +3,6 @@ package com.example.pocketnews.data.repository
 import com.example.pocketnews.data.remote.NewsApiService
 import com.example.pocketnews.domain.model.NewsArticle
 import com.example.pocketnews.domain.repository.NewsRepository
-import java.lang.Exception
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(

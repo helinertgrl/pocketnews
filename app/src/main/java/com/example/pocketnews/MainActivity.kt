@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.lifecycleScope
+import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -17,9 +17,6 @@ import com.example.pocketnews.ui.theme.PocketNewsTheme
 import com.example.pocketnews.worker.NewsCheckWorker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import androidx.work.Constraints
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
