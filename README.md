@@ -236,11 +236,11 @@ graph TD
 
 | Onboarding | Category Selection | Home Screen |
 |:----------:|:------------------:|:-----------:|
-| <img src="screenshots/onboarding_3.png" width="200"/> | <img src="screenshots/onboarding_2.jpg" width="200"/> | <img src="screenshots/home_light.jpg" width="200"/> |
+| ![Onboarding](screenshots/onboarding_3.png) | ![Category](screenshots/onboarding_2.jpeg) | ![Home](screenshots/home_light.jpeg) |
 
 | Settings | Notification |
 |:--------:|:------------:|
-| <img src="screenshots/settings_light.jpg" width="200"/> | <img src="screenshots/notification.png" width="200"/> |
+| ![Settings](screenshots/settings_light.jpeg) | ![Notification](screenshots/notification.png) |
 
 </div>
 
@@ -250,7 +250,7 @@ graph TD
 
 | Home Screen | Settings |
 |:-----------:|:--------:|
-| ![Home Dark](screenshots/home_dark.jpg) | ![Settings Dark](screenshots/settings_dark.jpg) |
+| ![Home Dark](screenshots/home_dark.jpeg) | ![Settings Dark](screenshots/settings_dark.jpeg) |
 
 </div>
 
