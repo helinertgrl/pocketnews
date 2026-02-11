@@ -253,6 +253,7 @@ graph TD
 | ![Home Dark](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/home_dark.jpeg) | ![Settings Dark](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/settings_dark.jpeg) |
 
 </div>
+
 ---
 
 ## 🚀 Setup
