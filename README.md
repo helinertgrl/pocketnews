@@ -236,7 +236,7 @@ graph TD
 
 | Onboarding | Category Selection | Home Screen |
 |:----------:|:------------------:|:-----------:|
-| ![Onboarding](screenshots/onboarding_1.jpg) | ![Category](screenshots/onboarding_2.jpg) | ![Home](screenshots/home_light.jpg) |
+| <img src="screenshots/onboarding_1.jpeg" width="200"/> | ![Category](screenshots/onboarding_2.jpg) | ![Home](screenshots/home_light.jpg) |
 
 | Settings | Notification |
 |:--------:|:------------:|
