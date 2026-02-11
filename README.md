@@ -234,13 +234,13 @@ graph TD
 
 <div align="center">
 
-| Onboarding | Category Selection | Home Screen |
+| Onboarding | Onboarding Categories | Home Screen |
 |:----------:|:------------------:|:-----------:|
-| ![Onboarding](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/onboarding_3.png) | ![Category](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/onboarding_2.jpeg) | ![Home](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/home_light.jpeg) |
+| <img src="screenshot/onboarding_3.png" width="200"/> | <img src="screenshot/onboarding_2.jpeg" width="200"/> | <img src="screenshot/home_light.jpeg" width="200"/> |
 
 | Settings | Notification |
 |:--------:|:------------:|
-| ![Settings](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/settings_light.jpeg) | ![Notification](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/notification.png) |
+| <img src="screenshot/settings_light.jpeg" width="200"/> | <img src="screenshot/notification.png" width="200"/> |
 
 </div>
 
@@ -250,7 +250,7 @@ graph TD
 
 | Home Screen | Settings |
 |:-----------:|:--------:|
-| ![Home Dark](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/home_dark.jpeg) | ![Settings Dark](https://raw.githubusercontent.com/helinertgrl/pocketnews/main/screenshots/settings_dark.jpeg) |
+| <img src="screenshot/home_dark.jpeg" width="200"/> | <img src="screenshot/settings_dark.jpeg" width="200"/> |
 
 </div>
 
