@@ -3,7 +3,6 @@ package com.example.pocketnews.presentation.onboarding
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -55,14 +54,9 @@ fun OnboardingScreen(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         viewModel.onNotificationPermissionResult(isGranted)
-        if (isGranted){
-            Log.d("OnboardScreen", "Bildirim izni verildi")
-        }else{
-            Log.d("OnboardingScreen","Bildirim izni reddedildi")
-        }
     }
 
-    //İlk açılışta izin (android 13+)
+    //Permission granted at the first opening. (android 13+)
     LaunchedEffect(Unit) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             val hasPermission = ContextCompat.checkSelfPermission(
@@ -76,7 +70,7 @@ fun OnboardingScreen(
                 viewModel.onNotificationPermissionResult(true)
             }
         }else{
-            //Android 12- izin oto var ama kullanıcı karar verecek.
+            //Android 12 - automatic permission is available, but the user will decide.
             viewModel.onNotificationPermissionResult(true)
         }
     }
@@ -99,13 +93,13 @@ fun OnboardingScreen(
         )
 
         Text(
-            "POCKET NEWS",
+            text = "POCKET NEWS",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(
-            "Pocket News, seçtiğiniz kategorileri sizin yerinize takip eder ve yeni bir gelişme olduğunda sizi anında bilgilendirir." ,
+            text = "Pocket News tracks your selected categories and notifies you instantly when there is a new development.",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(
@@ -131,7 +125,7 @@ fun OnboardingScreen(
                 modifier = Modifier.fillMaxWidth()
                     .padding(16.dp)
             ){
-                Text("Hangi kategorideki haberleri takip etmek istersiniz?",
+                Text("Which category would you like to follow?",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -172,7 +166,7 @@ fun OnboardingScreen(
                     .padding(16.dp)
             ) {
                 Text(
-                    "Ne sıklıkla kontrol edilsin?",
+                    text = "Check frequency?",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -190,7 +184,7 @@ fun OnboardingScreen(
                             onClick = { viewModel.onIntervalSelected(option) }
                         )
                         Text(
-                            "$option saat",
+                            text = "$option hours",
                             modifier = Modifier.padding(start = 8.dp)
                         )
                     }
@@ -220,11 +214,11 @@ fun OnboardingScreen(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Bildirimler",
+                        text = "Notifications",
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = "Yeni haberlerden haberdar ol",
+                        text = "Get notified about new news",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -253,7 +247,7 @@ fun OnboardingScreen(
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Text("BAŞLAYALIM",
+            Text("LET'S START",
                 style = MaterialTheme.typography.titleMedium)
         }
     }

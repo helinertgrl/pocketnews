@@ -49,23 +49,21 @@ class HomeViewModel @Inject constructor(
                 uiState = HomeUiState.Loading
             }
 
-            Log.d("HomeViewModel", "Loading news for category: $category")
             try {
                 var result = newsRepository.getTopHeadlines(category,"us")
                 if (result.isSuccess){
                     val articles = result.getOrNull() ?: emptyList()
-                    Log.d("HomeViewModel", "✅ Successfully loaded ${articles.size} articles")
                     uiState = HomeUiState.Success(articles = articles)
                 }
                 else{
-                    val error = result.exceptionOrNull()?.message ?: "Hata oluştu"
+                    val error = result.exceptionOrNull()?.message ?: "An error occurred"
                     Log.e("HomeViewModel", "❌ Error loading news: $error")
                     uiState = HomeUiState.Error(message = error)
                 }
             }
             catch (e: Exception){
                 Log.e("HomeViewModel", "❌ Exception: ${e.message}", e)
-                uiState = HomeUiState.Error(message = e.message ?: "Bilinmeyen hata")
+                uiState = HomeUiState.Error(message = e.message ?: "Unknown error")
             }
         }
     }
@@ -73,13 +71,11 @@ class HomeViewModel @Inject constructor(
     fun refreshNews(){
         viewModelScope.launch {
             isRefreshing = true
-            Log.d("HomeViewModel", "🔄 Refreshing news for category: $selectedCategory")
             try {
                 loadNews(selectedCategory)
             } finally {
                 delay(500)
                 isRefreshing = false
-                Log.d("HomeViewModel", "✅ Refresh completed")
             }
         }
     }

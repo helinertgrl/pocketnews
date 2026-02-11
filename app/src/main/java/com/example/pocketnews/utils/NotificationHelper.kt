@@ -15,7 +15,7 @@ import androidx.core.app.NotificationManagerCompat
 
 class NotificationHelper(private val context: Context) {
     private val CHANNEL_ID = "news_notifications"
-    private val CHANNEL_NAME = "Haber Bildirimleri"
+    private val CHANNEL_NAME = "News Notifications"
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     fun createNotificationChannel(){
@@ -25,14 +25,14 @@ class NotificationHelper(private val context: Context) {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Yeni haber bildirimleri için kullanılır"
+                description = "Used for new news notifications"
             }
             notificationManager.createNotificationChannel(channel)
         }
     }
 
     fun sendNewsNotification(context: Context, title: String, url: String){
-        // Tıklanınca açılacak URL için Intent
+        // Intent for the URL that will open when clicked.
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         val pendingIntent = PendingIntent.getActivity(
             context,
@@ -40,10 +40,10 @@ class NotificationHelper(private val context: Context) {
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        // Bildirim oluşturucu
+        // Notification generator
         val notification = NotificationCompat.Builder(context,CHANNEL_ID)
             .setSmallIcon(android.R.drawable.stat_notify_chat)
-            .setContentTitle("Yeni Haber!")
+            .setContentTitle("Breaking News!")
             .setContentText(title)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -51,7 +51,7 @@ class NotificationHelper(private val context: Context) {
             .build()
 
         val notificationManager = NotificationManagerCompat.from(context)
-        // İzin kontrolü burada sistem tarafından istenir, hata almamak için:
+        // Permission verification is requested by the system here; to avoid errors:
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
                 notificationManager.notify(System.currentTimeMillis().toInt(),notification)

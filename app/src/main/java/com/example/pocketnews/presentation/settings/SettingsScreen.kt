@@ -47,13 +47,13 @@ fun SettingsScreen(
     Scaffold (
         topBar = {
             TopAppBar(
-                title = {Text("Ayarlar",
+                title = {Text("Settings",
                     fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = {navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Geri"
+                            contentDescription = "Back"
                         )
                     }
                 }
@@ -73,14 +73,14 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            SettingsCard(title = "Görünüm") {
+            SettingsCard(title = "Appearance") {
                 Row (
                     modifier = Modifier.fillMaxWidth()
                         .padding(vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    Text("Koyu Tema")
+                    Text("Dark Mode")
                     Switch(
                         checked = state.isDarkMode,
                         onCheckedChange = {viewModel.onDarkModeToggled(it)}
@@ -88,7 +88,7 @@ fun SettingsScreen(
                 }
             }
 
-            SettingsCard(title = "Haber Kategorisi"){
+            SettingsCard(title = "News Category"){
                 state.categories.forEach { option ->
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
@@ -104,7 +104,7 @@ fun SettingsScreen(
                 }
             }
 
-            SettingsCard(title = "Kontrol Sıklığı"){
+            SettingsCard(title = "Check Frequency"){
                 state.intervals.forEach { option ->
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
@@ -115,32 +115,25 @@ fun SettingsScreen(
                             selected = (state.selectedInterval == option),
                             onClick = {viewModel.onIntervalSelected(option)}
                         )
-                        Text("${option} saat")
+                        Text("${option} hours")
                     }
                 }
             }
 
-            SettingsCard(title = "Bildirimler"){
+            SettingsCard(title = "Notifications"){
                 Row (
                     modifier = Modifier.fillMaxWidth()
                         .padding(vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    Text("Yeni haber bildirimleri")
+                    Text("New news notifications")
                     Switch(
                         checked = state.isNotificationsEnabled,
                         onCheckedChange = { isChecked ->
                             viewModel.onNotificationToggled(isChecked)
                         }
                     )
-                }
-                Button(
-                    onClick = {viewModel.testNotification()},
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text("Bildirimleri Test Et")
                 }
             }
 
@@ -156,7 +149,7 @@ fun SettingsScreen(
                 enabled = viewModel.hasChanges,
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Değişiklikleri Kaydet")
+                Text("Save Changes")
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.example.pocketnews.presentation.onboarding
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -46,27 +45,23 @@ class OnboardingViewModel @Inject constructor(
 
     fun onNotificationPermissionResult(isGranted: Boolean){
         systemNotificationPermissionGranted = isGranted
-        //izin reddedilirse switch'i kapat
+        //If permission is denied, turn off the switch.
         if (!isGranted){
             uiState = uiState.copy(notificationsEnabled = false)
         }
-        Log.d("OnboardingViewModel","System notification permission: ${isGranted}")
     }
 
     fun saveSelection(){
         viewModelScope.launch {
             preferencesManager.saveCategoryToDataStore(uiState.selectedCategory)
             preferencesManager.saveHoursToDataStore(uiState.selectedInterval)
-            preferencesManager.saveLaunchToDataStore(false) //Artık ilk açılış değil
+            preferencesManager.saveLaunchToDataStore(false) //This is not the first opening yet.
 
             val finalNotificationState = systemNotificationPermissionGranted && uiState.notificationsEnabled
             preferencesManager.saveNotificationsToDataStore(finalNotificationState)
 
-            Log.d("OnboardingViewModel", "Final notifications state: $finalNotificationState")
-            Log.d("OnboardingViewModel", "System permission: $systemNotificationPermissionGranted, User choice: ${uiState.notificationsEnabled}")
-
             NewsWorkManager.scheduleNewsCheck(context,uiState.selectedInterval)
-            Log.d("OnboardingViewModel","WorkManager scheduled with ${uiState.selectedInterval} hours")
+            NewsWorkManager.triggerImmediateCheck(context)
         }
     }
 }

@@ -31,13 +31,13 @@ class NewsCheckWorker @AssistedInject constructor(
                     android.Manifest.permission.POST_NOTIFICATIONS
                 ) != android.content.pm.PackageManager.PERMISSION_GRANTED
                     ) {
-                    return Result.failure() //izin yoksa failure
+                    return Result.failure() //failure if permission is not granted
                 }
             }
 
             val selectedCategory = preferencesManager.categoryFlow.first()
             val lastDateInDb = newsDao.getLatestPublishDate(selectedCategory) ?: "1970-01-01T00:00:00Z"
-            val response = apiService.getNewsApiService("tr",selectedCategory,"62a0b36c61884473973acd7d1cf95fc2")
+            val response = apiService.getNewsApiService("us",selectedCategory,"62a0b36c61884473973acd7d1cf95fc2")
             val newsArticlesFromApi = response.articles.filter { it.publishedAt > lastDateInDb}
 
             if (newsArticlesFromApi.isNotEmpty()){
@@ -55,7 +55,6 @@ class NewsCheckWorker @AssistedInject constructor(
                     )
                 }
                 newsDao.insertArticles(newsToInsert)
-                println("${newsToInsert.size} adet yeni haber veritabanına başarıyla kaydedildi.")
 
                 val firstArticle = newsArticlesFromApi.first()
                 val notificationHelper = com.example.pocketnews.utils.NotificationHelper(applicationContext)
@@ -70,7 +69,7 @@ class NewsCheckWorker @AssistedInject constructor(
             return Result.success()
 
         }catch (e: Exception){
-            Log.e("NewsCheckWorker", "Haber kontrolü sırasında hata oluştu: ${e.message}", e)
+            Log.e("NewsCheckWorker", "An error occurred during news verification.: ${e.message}", e)
             return Result.retry()
         }
     }

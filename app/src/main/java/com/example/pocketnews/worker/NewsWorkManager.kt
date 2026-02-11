@@ -36,4 +36,16 @@ object NewsWorkManager {
             workRequest
         )
     }
+
+    fun triggerImmediateCheck(context: Context) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val oneTimeRequest = androidx.work.OneTimeWorkRequest.Builder(NewsCheckWorker::class.java)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(context).enqueue(oneTimeRequest)
+    }
 }

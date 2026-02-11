@@ -1,14 +1,12 @@
 package com.example.pocketnews.presentation.settings
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pocketnews.data.local.PreferencesManager
-import com.example.pocketnews.utils.NotificationHelper
 import com.example.pocketnews.worker.NewsWorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -89,23 +87,11 @@ class SettingsViewModel @Inject constructor(
             preferencesManager.saveDarkModeToDataStore(uiState.isDarkMode)
 
             NewsWorkManager.scheduleNewsCheck(context,uiState.selectedInterval)
-            Log.d("SettingsViewModel", "WorkManager re-scheduled with ${uiState.selectedInterval} hours")
+            NewsWorkManager.triggerImmediateCheck(context)
 
             originalState = uiState
             onComplete()
         }
-    }
-
-    fun testNotification(){
-       viewModelScope.launch {
-           val notificationHelper = NotificationHelper(context)
-           notificationHelper.sendNewsNotification(
-               context = context,
-               title = "Test Bildirimi",
-               url = "https://www.google.com"
-           )
-           Log.d("SettingsViewModel", "Test notification sent")
-       }
     }
 
     fun onDarkModeToggled(enabled: Boolean){

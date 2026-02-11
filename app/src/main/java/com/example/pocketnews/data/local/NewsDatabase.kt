@@ -24,7 +24,7 @@ abstract class NewsDatabase: RoomDatabase() {
                     context.applicationContext,
                     NewsDatabase::class.java,
                     "news_database"
-                ).fallbackToDestructiveMigration()  //eskisini siler yenisini kurar version değişirse
+                ).fallbackToDestructiveMigration()  //if the version changes it deletes the old one and installs the new one.
                     .build()
                 INSTANCE = instance
                 instance

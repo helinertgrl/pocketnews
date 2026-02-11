@@ -1,7 +1,6 @@
 package com.example.pocketnews
 
 import android.app.Application
-import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.example.pocketnews.utils.NotificationHelper
@@ -24,6 +23,5 @@ class PocketNewsApp : Application(), Configuration.Provider{
 
         val notificationHelper = NotificationHelper(this)
         notificationHelper.createNotificationChannel()
-        Log.d("PocketNewsApp", "Notification channel created")
     }
 }

@@ -10,7 +10,7 @@ object RetrofitInstance {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client = OkHttpClient.Builder()  //gözlemci logcat için
+    private val client = OkHttpClient.Builder()  //observer for logcat
         .addInterceptor(logging)
         .build()
 

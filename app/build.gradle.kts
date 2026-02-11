@@ -98,6 +98,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-messaging-ktx")
 
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -52,7 +52,7 @@ fun HomeScreen(
     val category = viewModel.selectedCategory
 
     val titleText = if (category == "general" || category.isEmpty()) {
-        "Haberler"
+        "News"
     } else {
         category.replaceFirstChar { it.uppercase() }
     }
@@ -76,7 +76,7 @@ fun HomeScreen(
                     {
                         Icon(
                             Icons.Default.Settings,
-                            contentDescription = "ayarlar"
+                            contentDescription = "settings"
                         )
                     }
                 }
@@ -118,7 +118,7 @@ fun HomeScreen(
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
-                                Text("Henüz haber yok, ilk kontrol bekleniyor...",
+                                Text("No news yet, waiting for the first check...",
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -163,7 +163,7 @@ fun HomeScreen(
                             viewModel.refreshNews()},
                             shape = RoundedCornerShape(12.dp)
                         ) {
-                            Text("Yenile")
+                            Text("Refresh")
                         }
                     }
                 }
