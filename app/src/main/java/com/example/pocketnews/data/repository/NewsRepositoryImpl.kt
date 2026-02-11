@@ -15,7 +15,8 @@ class NewsRepositoryImpl @Inject constructor(
             val response = api.getNewsApiService(
                 category = category,
                 country = country,
-                apiKey = "62a0b36c61884473973acd7d1cf95fc2")
+                apiKey = com.example.pocketnews.BuildConfig.API_KEY
+            )
             Result.success(response.articles)
         } catch (e: Exception){
             Result.failure(e)

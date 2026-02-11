@@ -10,6 +10,7 @@ import com.example.pocketnews.data.local.NewsArticleEntity
 import com.example.pocketnews.data.local.NewsDao
 import com.example.pocketnews.data.local.PreferencesManager
 import com.example.pocketnews.data.remote.NewsApiService
+import com.google.android.datatransport.BuildConfig
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
@@ -37,7 +38,7 @@ class NewsCheckWorker @AssistedInject constructor(
 
             val selectedCategory = preferencesManager.categoryFlow.first()
             val lastDateInDb = newsDao.getLatestPublishDate(selectedCategory) ?: "1970-01-01T00:00:00Z"
-            val response = apiService.getNewsApiService("us",selectedCategory,"62a0b36c61884473973acd7d1cf95fc2")
+            val response = apiService.getNewsApiService("us",selectedCategory, com.example.pocketnews.BuildConfig.API_KEY)
             val newsArticlesFromApi = response.articles.filter { it.publishedAt > lastDateInDb}
 
             if (newsArticlesFromApi.isNotEmpty()){
