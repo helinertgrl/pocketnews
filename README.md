@@ -236,11 +236,11 @@ graph TD
 
 | Onboarding | Category Selection | Home Screen |
 |:----------:|:------------------:|:-----------:|
-| <img src="screenshots/onboarding_3.png" width="200"/> | ![Category](screenshots/onboarding_2.jpg) | ![Home](screenshots/home_light.jpg) |
+| <img src="screenshots/onboarding_3.png" width="200"/> | <img src="screenshots/onboarding_2.jpg" width="200"/> | <img src="screenshots/home_light.jpg" width="200"/> |
 
 | Settings | Notification |
 |:--------:|:------------:|
-| ![Settings](screenshots/settings_light.jpg) | ![Notification](screenshots/notification.png) |
+| <img src="screenshots/settings_light.jpg" width="200"/> | <img src="screenshots/notification.png" width="200"/> |
 
 </div>
 
