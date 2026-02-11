@@ -11,9 +11,6 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-Passing-brightgreen?logo=github-actions)](https://github.com/helinertgrl/PocketNews)
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/yourusername/pocketnews-banner.png" alt="PocketNews Banner" width="800"/>
-</p>
 
 **PocketNews** is a modern Android news application that delivers personalized news updates based on your interests. Built with **Jetpack Compose**, **MVVM architecture**, and **Clean Architecture** principles, it showcases best practices in Android development.
 
