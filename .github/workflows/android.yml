@@ -2,9 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -19,6 +19,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+
+      - name: Create google-services.json
+        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > app/google-services.json
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
