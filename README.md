@@ -1,352 +1,472 @@
-# 📰 PocketNews
-
 <div align="center">
 
-![Android](https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
-![Kotlin](https://img.shields.io/badge/Language-Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
-![Min API](https://img.shields.io/badge/Min%20API-26-green?style=for-the-badge)
-![Target API](https://img.shields.io/badge/Target%20API-36-blue?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
+# 📰 PocketNews
 
-**A modern, intelligent news aggregation app that delivers personalized news updates with smart notifications**
+### Stay Updated with Personalized News Notifications
 
-[Features](#-features) • [Architecture](#-architecture) • [Tech Stack](#-tech-stack) • [Setup](#-setup) • [Screenshots](#-screenshots)
+[![Android](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)](https://www.android.com/)
+[![Kotlin](https://img.shields.io/badge/Language-Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/)
+[![MinSDK](https://img.shields.io/badge/MinSDK-26-00C4CC)](https://developer.android.com/studio/releases/platforms#8.0)
+[![TargetSDK](https://img.shields.io/badge/TargetSDK-36-00C4CC)](https://developer.android.com/studio/releases/platforms)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-Passing-brightgreen?logo=github-actions)](https://github.com/helinertgrl/PocketNews)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/yourusername/pocketnews-banner.png" alt="PocketNews Banner" width="800"/>
+</p>
+
+**PocketNews** is a modern Android news application that delivers personalized news updates based on your interests. Built with **Jetpack Compose**, **MVVM architecture**, and **Clean Architecture** principles, it showcases best practices in Android development.
+
+[Features](#-features) • [Screenshots](#-screenshots) • [Tech Stack](#-tech-stack) • [Architecture](#-architecture) • [Installation](#-installation) • [CI/CD](#-cicd)
 
 </div>
-
----
-
-## 📋 Overview
-
-PocketNews is a sophisticated Android application built with modern Android development practices. The app monitors selected news categories and intelligently notifies users about breaking news through background processing. Built entirely with **Kotlin** and **Jetpack Compose**, it demonstrates best practices in Android development including Clean Architecture, dependency injection, and background task management.
-
-### 🎯 Key Highlights
-
-- **100% Kotlin** - Modern, type-safe programming
-- **Jetpack Compose UI** - Declarative, reactive UI framework
-- **Clean Architecture** - Separation of concerns with MVVM pattern
-- **Background Processing** - Intelligent news monitoring with WorkManager
-- **Local Persistence** - Room database for offline-first approach
-- **Dependency Injection** - Hilt for scalable architecture
-- **CI/CD Pipeline** - Automated builds and tests with GitHub Actions
 
 ---
 
 ## ✨ Features
 
-### Core Functionality
+<table>
+<tr>
+<td width="50%">
 
-| Feature | Description |
-|---------|-------------|
-| 🔔 **Smart Notifications** | Background worker checks for new articles and sends timely push notifications |
-| 📱 **Material Design 3** | Modern UI following latest Material Design guidelines |
-| 🌙 **Dark Mode Support** | System-aware theme switching for better user experience |
-| 🔄 **Pull-to-Refresh** | Instant manual refresh capability with smooth animations |
-| ⚙️ **Customizable Settings** | User-defined news categories and update intervals (2-24 hours) |
-| 💾 **Offline Support** | Room database caches articles for offline reading |
-| 🚀 **Onboarding Flow** | First-launch experience with permission handling |
+### 🎯 Core Functionality
+- **Personalized News Feed** - Choose from Sports & Technology categories
+- **Smart Notifications** - Get instant alerts for breaking news
+- **Background Sync** - Automatic news updates via WorkManager
+- **Offline-First** - Room database for seamless offline access
+- **Pull-to-Refresh** - Intuitive gesture to fetch latest news
 
-### Technical Features
+</td>
+<td width="50%">
 
-- **Periodic Background Sync** - WorkManager schedules automatic news checks
-- **Network Monitoring** - Constraints ensure sync only on connected networks
-- **State Management** - Flow-based reactive data streams
-- **DataStore Preferences** - Type-safe preference storage
-- **Runtime Permissions** - POST_NOTIFICATIONS permission handling (Android 13+)
-- **Deep Linking** - Opens news articles in external browser
+### 🎨 User Experience
+- **Material 3 Design** - Modern, clean UI with custom theming
+- **Dark Mode** - Eye-friendly dark theme support
+- **Smooth Onboarding** - First-time user setup flow
+- **Customizable Settings** - Adjust check frequency (2-24 hours)
+- **Responsive Cards** - Beautiful news cards with images
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 🏗️ Architecture
+## 📱 Screenshots
 
-### Clean Architecture Layers
+<div align="center">
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Presentation Layer                    │
-│  ┌────────────┐  ┌──────────┐  ┌──────────────────┐    │
-│  │  Compose   │  │ViewModel │  │   Navigation     │    │
-│  │     UI     │  │  (MVVM)  │  │    Component     │    │
-│  └────────────┘  └──────────┘  └──────────────────┘    │
-└─────────────────────────────────────────────────────────┘
-                          ↕
-┌─────────────────────────────────────────────────────────┐
-│                      Domain Layer                        │
-│  ┌──────────────────┐         ┌──────────────────┐     │
-│  │   Use Cases      │         │    Repository    │     │
-│  │   (Business      │    →    │    Interface     │     │
-│  │     Logic)       │         │                  │     │
-│  └──────────────────┘         └──────────────────┘     │
-└─────────────────────────────────────────────────────────┘
-                          ↕
-┌─────────────────────────────────────────────────────────┐
-│                       Data Layer                         │
-│  ┌──────────┐  ┌──────────┐  ┌────────────────────┐   │
-│  │  Remote  │  │   Local  │  │   Repository       │   │
-│  │   (API)  │  │  (Room)  │  │  Implementation    │   │
-│  └──────────┘  └──────────┘  └────────────────────┘   │
-└─────────────────────────────────────────────────────────┘
-```
+### Light Theme
 
-### Project Structure
+<table>
+<tr>
+<td align="center" width="33%">
+<img src="screenshot/onboarding.jpeg" width="200"/>
+<br />
+<strong>Onboarding</strong>
+</td>
+<td align="center" width="33%">
+<img src="screenshot/home_light.jpeg" width="200"/>
+<br />
+<strong>Home Screen</strong>
+</td>
+<td align="center" width="33%">
+<img src="screenshot/settings_light.jpeg" width="200"/>
+<br />
+<strong>Settings</strong>
+</td>
+</tr>
+</table>
 
-```
-com.example.pocketnews/
-│
-├── data/
-│   ├── local/
-│   │   ├── NewsArticleEntity.kt      # Room entity
-│   │   ├── NewsDao.kt                # Database access object
-│   │   ├── NewsDatabase.kt           # Room database
-│   │   └── PreferencesManager.kt     # DataStore wrapper
-│   │
-│   ├── remote/
-│   │   ├── NewsApiService.kt         # Retrofit interface
-│   │   └── RetrofitInstance.kt       # Retrofit singleton
-│   │
-│   └── repository/
-│       └── NewsRepositoryImpl.kt     # Repository implementation
-│
-├── domain/
-│   ├── model/
-│   │   ├── NewsArticle.kt            # Domain model
-│   │   └── NewsResponse.kt           # API response model
-│   │
-│   └── repository/
-│       └── NewsRepository.kt         # Repository contract
-│
-├── di/
-│   ├── AppModule.kt                  # Hilt dependency module
-│   └── WorkerModule.kt               # Worker factory module
-│
-├── presentation/
-│   ├── home/
-│   │   ├── HomeScreen.kt             # Main news feed
-│   │   ├── HomeViewModel.kt          # State management
-│   │   └── components/
-│   │       └── NewsCard.kt           # Reusable card component
-│   │
-│   ├── onboarding/
-│   │   ├── OnboardingScreen.kt       # First launch setup
-│   │   └── OnboardingViewModel.kt    # Onboarding state
-│   │
-│   ├── settings/
-│   │   ├── SettingsScreen.kt         # App configuration
-│   │   └── SettingsViewModel.kt      # Settings state
-│   │
-│   └── Navigation.kt                 # Navigation graph
-│
-├── ui/
-│   └── theme/                        # Material3 theming
-│
-├── utils/
-│   └── NotificationHelper.kt         # Notification manager
-│
-├── worker/
-│   ├── NewsCheckWorker.kt            # Background sync worker
-│   └── NewsWorkManager.kt            # WorkManager scheduler
-│
-├── MainActivity.kt                   # Entry point
-└── PocketNewsApp.kt                  # Application class
-```
+### Dark Theme
+
+<table>
+<tr>
+<td align="center" width="50%">
+<img src="screenshot/home_dark.jpeg" width="200"/>
+<br />
+<strong>Home Screen (Dark)</strong>
+</td>
+<td align="center" width="50%">
+<img src="screenshot/settings_dark.jpeg" width="200"/>
+<br />
+<strong>Settings (Dark)</strong>
+</td>
+</tr>
+</table>
+
+### Notifications
+
+<table>
+<tr>
+<td align="center">
+<img src="screenshot/notification.png" width="200"/>
+<br />
+<strong>Push Notification</strong>
+</td>
+</tr>
+</table>
+
+</div>
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Core Technologies
+<table>
+<tr>
+<td valign="top" width="33%">
 
-| Category | Technology | Purpose |
-|----------|-----------|---------|
-| **Language** | Kotlin 100% | Type-safe, modern programming |
-| **UI Framework** | Jetpack Compose | Declarative UI toolkit |
-| **Architecture** | MVVM + Clean Architecture | Separation of concerns |
-| **Dependency Injection** | Hilt (Dagger) | Scalable DI framework |
-| **Async Programming** | Coroutines + Flow | Reactive, non-blocking operations |
+#### 🎨 UI Layer
+- **Jetpack Compose** - Modern declarative UI
+- **Material 3** - Latest Material Design
+- **Coil** - Async image loading
+- **Navigation Compose** - Type-safe navigation
 
-### Jetpack Components
+</td>
+<td valign="top" width="33%">
 
-| Component | Usage |
-|-----------|-------|
-| **Compose** | Modern declarative UI |
-| **ViewModel** | UI state management |
-| **Navigation Compose** | Type-safe navigation |
-| **Room** | Local database ORM |
-| **DataStore** | Type-safe preferences |
-| **WorkManager** | Background task scheduling |
-| **Lifecycle** | Lifecycle-aware components |
+#### 🏗️ Architecture & DI
+- **MVVM Pattern** - Clean separation of concerns
+- **Clean Architecture** - Modular, testable code
+- **Hilt** - Dependency injection
+- **Kotlin Coroutines** - Asynchronous programming
+- **StateFlow** - Reactive state management
 
-### Third-Party Libraries
+</td>
+<td valign="top" width="33%">
 
-| Library | Version | Purpose |
-|---------|---------|---------|
-| **Retrofit** | 2.11.0 | REST API client |
-| **OkHttp** | 4.12.0 | HTTP client & interceptor |
-| **Gson** | 2.11.0 | JSON serialization |
-| **Hilt** | 2.52 | Dependency injection |
-| **Room** | 2.6.1 | SQLite database wrapper |
+#### 💾 Data Layer
+- **Room Database** - Local data persistence
+- **DataStore** - Preferences management
+- **Retrofit** - REST API integration
+- **WorkManager** - Background task scheduling
+- **Firebase Cloud Messaging** - Push notifications
 
-### Development Tools
+</td>
+</tr>
+</table>
 
-- **Gradle (KTS)** - Build configuration with Kotlin DSL
-- **KSP** - Kotlin Symbol Processing for annotation processors
-- **GitHub Actions** - CI/CD automation
-- **Material Design 3** - Latest design system
+### 📦 Dependencies
 
----
+```kotlin
+// UI
+androidx.compose.material3
+androidx.navigation:navigation-compose
+io.coil-kt:coil-compose
 
-## 🔄 Data Flow
+// Dependency Injection
+com.google.dagger:hilt-android
+androidx.hilt:hilt-navigation-compose
 
-```mermaid
-graph TD
-    A[User Opens App] --> B{First Launch?}
-    B -->|Yes| C[Onboarding Screen]
-    B -->|No| D[Home Screen]
-    
-    C --> E[Request Notification Permission]
-    E --> F[Select News Category]
-    F --> G[Choose Update Interval]
-    G --> H[Schedule WorkManager]
-    H --> D
-    
-    D --> I[Load News from Room DB]
-    I --> J{Data Available?}
-    J -->|Yes| K[Display News List]
-    J -->|No| L[Fetch from API]
-    
-    L --> M[Save to Room DB]
-    M --> K
-    
-    N[WorkManager Periodic Task] --> O{Network Available?}
-    O -->|Yes| P[Fetch Latest News]
-    P --> Q{New Articles?}
-    Q -->|Yes| R[Save to DB]
-    R --> S[Send Push Notification]
-    Q -->|No| T[End Task]
-    O -->|No| T
+// Networking
+com.squareup.retrofit2:retrofit
+com.squareup.retrofit2:converter-gson
+com.squareup.okhttp3:logging-interceptor
+
+// Database
+androidx.room:room-runtime
+androidx.room:room-ktx
+
+// Background Tasks
+androidx.work:work-runtime-ktx
+androidx.hilt:hilt-work
+
+// Storage
+androidx.datastore:datastore-preferences
+
+// Firebase
+com.google.firebase:firebase-messaging-ktx
 ```
 
 ---
 
-## 📸 Screenshots
+## 🏛️ Architecture
 
-### Light Theme
+PocketNews follows **Clean Architecture** principles with clear separation of layers:
 
-<div align="center">
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     PRESENTATION LAYER                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │   Compose    │  │  ViewModel   │  │    Screen    │     │
+│  │     UI       │◄─┤   (State)    │◄─┤  Navigation  │     │
+│  └──────────────┘  └──────────────┘  └──────────────┘     │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+┌────────────────────────────▼────────────────────────────────┐
+│                      DOMAIN LAYER                           │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │  Use Cases   │  │   Models     │  │ Repository   │     │
+│  │  (Business)  │  │  (Entities)  │  │  Interface   │     │
+│  └──────────────┘  └──────────────┘  └──────────────┘     │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+┌────────────────────────────▼────────────────────────────────┐
+│                       DATA LAYER                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │   Room DB    │  │  Retrofit    │  │  DataStore   │     │
+│  │   (Local)    │  │  (Remote)    │  │ (Preferences)│     │
+│  └──────────────┘  └──────────────┘  └──────────────┘     │
+└─────────────────────────────────────────────────────────────┘
+```
 
-| Onboarding | Onboarding Categories | Home Screen |
-|:----------:|:------------------:|:-----------:|
-| <img src="screenshot/onboarding_3.png" width="200"/> | <img src="screenshot/onboarding_2.jpeg" width="200"/> | <img src="screenshot/home_light.jpeg" width="200"/> |
+### 📂 Project Structure
 
-| Settings | Notification |
-|:--------:|:------------:|
-| <img src="screenshot/settings_light.jpeg" width="200"/> | <img src="screenshot/notification.png" width="200"/> |
-
-</div>
-
-### Dark Theme
-
-<div align="center">
-
-| Home Screen | Settings |
-|:-----------:|:--------:|
-| <img src="screenshot/home_dark.jpeg" width="200"/> | <img src="screenshot/settings_dark.jpeg" width="200"/> |
-
-</div>
+```
+com.example.pocketnews/
+├── 📱 presentation/          # UI Layer
+│   ├── home/
+│   │   ├── HomeScreen.kt
+│   │   ├── HomeViewModel.kt
+│   │   └── components/
+│   │       └── NewsCard.kt
+│   ├── onboarding/
+│   │   ├── OnboardingScreen.kt
+│   │   └── OnboardingViewModel.kt
+│   ├── settings/
+│   │   ├── SettingsScreen.kt
+│   │   └── SettingsViewModel.kt
+│   └── Navigation.kt
+│
+├── 🏢 domain/                # Business Logic
+│   ├── model/
+│   │   ├── NewsArticle.kt
+│   │   └── NewsResponse.kt
+│   └── repository/
+│       └── NewsRepository.kt
+│
+├── 💾 data/                  # Data Sources
+│   ├── local/
+│   │   ├── NewsDatabase.kt
+│   │   ├── NewsDao.kt
+│   │   ├── NewsArticleEntity.kt
+│   │   └── PreferencesManager.kt
+│   ├── remote/
+│   │   ├── NewsApiService.kt
+│   │   └── RetrofitInstance.kt
+│   └── repository/
+│       └── NewsRepositoryImpl.kt
+│
+├── 💉 di/                    # Dependency Injection
+│   ├── AppModule.kt
+│   └── WorkerModule.kt
+│
+├── ⚙️ worker/                # Background Tasks
+│   ├── NewsCheckWorker.kt
+│   └── NewsWorkManager.kt
+│
+├── 🛠️ utils/                 # Utilities
+│   └── NotificationHelper.kt
+│
+└── 🎨 ui/theme/              # UI Theme
+    ├── Color.kt
+    ├── Theme.kt
+    └── Type.kt
+```
 
 ---
 
-## 🚀 Setup
+## 🔄 Data Flow Diagram
+
+```mermaid
+graph TB
+    A[User Action] --> B[ViewModel]
+    B --> C{State Update}
+    C -->|Success| D[Update UI]
+    C -->|Loading| E[Show Loader]
+    C -->|Error| F[Show Error]
+    
+    B --> G[Repository]
+    G --> H{Data Source}
+    H -->|Remote| I[NewsAPI]
+    H -->|Local| J[Room DB]
+    
+    I --> K[Save to DB]
+    K --> J
+    J --> G
+    
+    L[WorkManager] --> M[NewsCheckWorker]
+    M --> G
+    M --> N[NotificationHelper]
+    N --> O[System Notification]
+    
+    style A fill:#e1f5ff
+    style D fill:#c8e6c9
+    style F fill:#ffcdd2
+    style I fill:#fff9c4
+    style J fill:#ffe0b2
+    style O fill:#f8bbd0
+```
+
+---
+
+## 🚀 Installation
 
 ### Prerequisites
 
-- **Android Studio** Hedgehog (2023.1.1) or later
-- **JDK** 17 or higher
-- **Gradle** 8.0+
-- **Min SDK** 26 (Android 8.0)
-- **Target SDK** 36 (Android 15)
+- Android Studio Meerkat | 2024.3.1 or newer
+- JDK 17
+- Android SDK (API 26-36)
 
-### Installation Steps
+### Setup Instructions
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/helinertgrl/pocketnews.git
-   cd pocketnews
+   git clone https://github.com/helinertgrl/PocketNews.git
+   cd PocketNews
    ```
 
-2. **Open in Android Studio**
-   - File → Open → Select the project directory
-
-3. **Get API Key**
-   - Sign up at [NewsAPI.org](https://newsapi.org/)
-   - Get your free API key
-
-4. **Configure API Key**
-   
-   Create `local.properties` in project root:
-   ```properties
-   NEWS_API_KEY=your_api_key_here
-   ```
-   
-   Or directly in `NewsRepositoryImpl.kt` (line 18):
+2. **Get NewsAPI Key**
+   - Visit [NewsAPI.org](https://newsapi.org/)
+   - Sign up and get your free API key
+   - Open your gradle.properties file in the project root.
+   - Add your API key as a String:
    ```kotlin
-   apiKey = "YOUR_API_KEY"
+   NEWS_API_KEY="your_api_key_here"
    ```
+   -The project is configured to inject this key via BuildConfig for security.
 
-5. **Sync Gradle**
+3. **Firebase Setup (Optional for FCM)**
+   - Create a project in [Firebase Console](https://console.firebase.google.com/)
+   - Add your Android app
+   - Download `google-services.json`
+   - Place it in `app/` directory
+
+4. **Build & Run**
    ```bash
    ./gradlew build
+   ./gradlew installDebug
    ```
 
-6. **Run the app**
-   - Select emulator or physical device
-   - Click Run ▶️
-
-### Firebase Setup (Optional - For FCM)
-
-1. Create Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
-2. Download `google-services.json`
-3. Place in `app/` directory
-4. Sync project
+   Or simply click ▶️ Run in Android Studio
 
 ---
 
 
-## 📦 CI/CD Pipeline
+### Update Intervals
 
-### GitHub Actions Workflow
+Users can customize news check frequency:
 
-The project uses automated CI/CD with the following stages:
+| Interval | Use Case |
+|----------|----------|
+| **2 hours** | Breaking news enthusiasts |
+| **4 hours** | Regular updates (Default) |
+| **6 hours** | Balanced approach |
+| **12 hours** | Twice daily |
+| **24 hours** | Daily digest |
+
+---
+
+## 🔄 CI/CD
+
+The project includes **GitHub Actions** workflow for automated builds and tests.
+
+### Workflow Features
 
 ```yaml
 name: Android CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - Checkout code
-      - Setup JDK 17
-      - Grant execute permission to gradlew
-      - Build with Gradle
-      - Run tests
-      - Upload APK artifact
+      - ✅ Checkout code
+      - ⚙️ Setup JDK 17
+      - 🔧 Grant execute permission
+      - 🏗️ Build with Gradle
+      - 🧪 Run unit tests
+      - 📦 Upload APK artifact
 ```
 
-**Current Status:** ![CI Status](https://github.com/helinertgrl/pocketnews/workflows/Android%20CI/badge.svg)
+### Build Status
+
+![CI Status](https://github.com/helinertgrl/PocketNews/workflows/Android%20CI/badge.svg)
 
 ---
 
-## 🗺️ Roadmap
 
-- [ ] **Search Functionality** - Full-text search across articles
-- [ ] **Bookmark System** - Save articles for later reading
-- [ ] **Share Integration** - Share articles to social media
-- [ ] **Multiple Categories** - Support selecting multiple categories
-- [ ] **In-App Browser** - WebView for reading articles
-- [ ] **Analytics Integration** - Firebase Analytics tracking
+## 📊 API Reference
+
+### NewsAPI Integration
+
+**Endpoint**: `GET /v2/top-headlines`
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `country` | String | Country code (e.g., "us") |
+| `category` | String | News category |
+| `apiKey` | String | Injected via BuildConfig |
+
+**Response**:
+```json
+{
+  "status": "ok",
+  "totalResults": 38,
+  "articles": [
+    {
+      "source": { "name": "CBS Sports" },
+      "title": "Winter Olympics 2026...",
+      "description": "Tuesday will be...",
+      "url": "https://...",
+      "urlToImage": "https://...",
+      "publishedAt": "2024-02-11T23:21:00Z"
+    }
+  ]
+}
+```
+
+---
+
+## 🎯 Key Learnings & Best Practices
+
+This project demonstrates:
+
+### 🏗️ Architecture
+- ✅ **MVVM** with clear separation of concerns
+- ✅ **Clean Architecture** for scalability
+- ✅ **Repository Pattern** for data abstraction
+- ✅ **Dependency Injection** with Hilt
+
+### 🎨 Modern Android Development
+- ✅ **Jetpack Compose** for declarative UI
+- ✅ **Material 3** design system
+- ✅ **Kotlin Coroutines** for async operations
+- ✅ **StateFlow** for reactive state management
+
+### 💾 Data Management
+- ✅ **Room** for local persistence
+- ✅ **DataStore** for preferences
+- ✅ **Offline-first** architecture
+- ✅ **WorkManager** for background sync
+
+### 🔔 Background Processing
+- ✅ **Periodic WorkManager** tasks
+- ✅ **Push Notifications** with FCM
+- ✅ **Battery-efficient** background jobs
+
+---
+
+## 🐛 Known Issues & Roadmap
+
+### Current Limitations
+- [ ] Limited to 2 news categories (Sports, Technology)
+- [ ] API rate limiting (100 requests/day on free tier)
+- [ ] No search functionality
+
+### Future Enhancements
+- [ ] 🔍 Search news articles
+- [ ] 📑 Multiple categories support
+- [ ] 🔖 Bookmark favorite articles
+- [ ] 📤 Share articles on social media
+- [ ] 📊 Analytics dashboard
 
 ---
 
@@ -361,33 +481,47 @@ Contributions are welcome! Please follow these steps:
 5. Open a Pull Request
 
 ### Code Style
-- Follow [Kotlin Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html)
-- Use meaningful variable and function names
-- Add comments for complex logic
-- Write unit tests for new features
+
+This project follows:
+- [Kotlin Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html)
+- [Android Kotlin Style Guide](https://developer.android.com/kotlin/style-guide)
 
 ---
 
-## 📝 License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+```
+MIT License
+
+Copyright (c) 2026 Helin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction...
+```
+
 ---
 
-## 👤 Author
+## 👨‍💻 Author
 
-**Helin Ertugrul**
+**Helin**
 
-- GitHub: [@helinertgrl](https://github.com/helinertgrl)
-- LinkedIn: [Helin Ertugrul](https://www.linkedin.com/in/helin-ertuğrul/) 
+- 📧 Email: helinertgrll@gmail.com
+- 💼 LinkedIn: [linkedin.com/in/yourprofile](https://www.linkedin.com/in/helin-ertuğrul/)
 
 ---
 
 
 <div align="center">
 
-### ⭐ Star this repository if you found it helpful!
+### ⭐ Star this repository if you find it helpful!
 
-**Built with ❤️ using Kotlin & Jetpack Compose**
+Made with ❤️ by Helin
+
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=helinertgrl.PocketNews)
+![Stars](https://img.shields.io/github/stars/helinertgrl/PocketNews?style=social)
+![Forks](https://img.shields.io/github/forks/helinertgrl/PocketNews?style=social)
 
 </div>
